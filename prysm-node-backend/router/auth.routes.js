@@ -3,7 +3,8 @@ const router = express.Router();
 const {register} = require("../Controller/auth.controller");
 const validate = require("../middleware/validate");
 const {registerSchema}  = require("../validation/auth.schems");
- 
+const {loginFunction} = require("../Controller/login.controller");
+const {loginSchema} = require("../validation/auth.schems");
 
 /**
  * @swagger
@@ -38,6 +39,35 @@ const {registerSchema}  = require("../validation/auth.schems");
  *       409:
  *         description: Email already exists
  */
-router.post("/register", validate(registerSchema), register);
 
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Unauthorized
+ */
+
+router.post("/register", validate(registerSchema), register);
+router.post("/login",validate(loginSchema),loginFunction);
 module.exports = router;
