@@ -1,20 +1,38 @@
-const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerJSDoc = require("swagger-jsdoc");
 
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Prysm Labs Backend API",
-      version: "1.0.0",
-      description: "API Documentation for Backend Assignment"
-    },
-    servers: [
-      {
-        url: "http://localhost:5000"
-      }
-    ]
+const swaggerDefinition = {
+  openapi: "3.0.0",
+  info: {
+    title: "Prysm Labs Backend API",
+    version: "1.0.0",
+    description: "Backend API Documentation"
   },
-  apis: ["./router/*.js"]
+  servers: [
+    {
+      url: "http://localhost:5000"
+    }
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT"
+      }
+    }
+  },
+  security: [
+    {
+      bearerAuth: []
+    }
+  ]
 };
 
-module.exports = swaggerJsdoc(options);
+const options = {
+  swaggerDefinition,
+  apis: ["./router/*.js"],   // 👈 where your route files exist
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+module.exports = swaggerSpec;
