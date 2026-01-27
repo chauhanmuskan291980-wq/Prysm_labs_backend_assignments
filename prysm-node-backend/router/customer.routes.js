@@ -124,7 +124,6 @@ router.post(
 router.get(
   "/customers",
   authMiddleware,
-  roleMiddleware(["ADMIN", "EMPLOYEE"]),
   getCustomers
 );
 
