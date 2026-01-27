@@ -22,8 +22,10 @@ model User {
   password  String
   role      String
   createdAt DateTime @default(now())
-}
 
+  // Relations
+  tasks Task[] @relation("UserTasks")
+}
 
 model Customer {
   id        Int      @id @default(autoincrement())
@@ -31,6 +33,31 @@ model Customer {
   email     String   @unique
   phone     String   @unique
   company   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tasks Task[]
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+model Task {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String?
+  status       TaskStatus @default(PENDING)
+
+  assignedToId Int
+  assignedTo   User       @relation("UserTasks", fields: [assignedToId], references: [id])
+
+  customerId   Int
+  customer     Customer   @relation(fields: [customerId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

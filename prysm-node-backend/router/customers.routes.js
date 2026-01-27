@@ -8,7 +8,7 @@ const {
     deleteCustomer
 } = require("../Controller/customer.controller");
 const validate = require("../middleware/validate");
-const { createCustomerSchema } = require("../validation/customer.schema");
+const { createCustomerSchema,updateCustomerSchema } = require("../validation/customer.schema");
 const authMiddleware = require("../middleware/auth.middleware");
 const roleMiddleware = require("../middleware/role.middleware");
 
@@ -106,7 +106,7 @@ router.patch(
     "/customers/:id",
     authMiddleware,
     roleMiddleware("ADMIN"),
-    validate(createCustomerSchema),
+    validate(updateCustomerSchema),
     updateCustomer
 );
 

@@ -7,4 +7,10 @@ const createCustomerSchema = z.object({
   company: z.string().optional()
 });
 
-module.exports = { createCustomerSchema };
+const updateCustomerSchema = z.object({
+  name: z.string().min(1, "Name is required").optional(),
+  email: z.string().email("Invalid email format").optional(),
+  phone: z.string().min(10, "Phone is Minimum 10 Number required").optional(),
+  company: z.string().optional()
+});
+module.exports = { createCustomerSchema,updateCustomerSchema };
