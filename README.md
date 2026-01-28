@@ -1,4 +1,4 @@
-# Prysm Labs – Mini CRM Backend API
+ # Prysm Labs – Mini CRM Backend API
 
 Backend Developer Intern Assignment
 
@@ -231,6 +231,40 @@ Response:
 
 # 🧾 Customers APIs
 
+## 🔍 Customer Search Filter
+
+**GET /customers?search=**
+
+Allows searching customers by **name, email, phone, or company**.
+
+Example:
+
+```
+GET /customers?search=health
+GET /customers?search=gmail
+GET /customers?search=9999
+```
+
+Response:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "HealthPlus",
+      "email": "contact@healthplus.com",
+      "phone": "9999999999",
+      "company": "HealthPlus Pvt Ltd"
+    }
+  ]
+}
+```
+
+---
+
+## POST /customers (ADMIN)
+
 ## POST /customers (ADMIN)
 
 ```json
@@ -332,6 +366,111 @@ All APIs tested using:
 
 ---
 
+# 🔑 Test Credentials
+
+Use the following **pre-created users** for testing:
+
+### 👑 ADMIN User
+
+```
+email: chauhanmuskam2006@gmail.com
+password: muskan!!!@00$
+role: ADMIN
+```
+
+### 👤 EMPLOYEE User
+
+```
+email: chauhanmuskan2006@gmail.com
+password: chauhan@123
+role: EMPLOYEE
+```
+
+---
+
+# 🧭 Role-Based Testing Guide
+
+## 🔐 Step 1: Login
+
+### ADMIN Login
+
+`POST /auth/login`
+
+```json
+{
+  "email": "chauhanmuskam2006@gmail.com",
+  "password": "muskan!!!@00$"
+}
+```
+
+### EMPLOYEE Login
+
+`POST /auth/login`
+
+```json
+{
+  "email": "chauhanmuskan2006@gmail.com",
+  "password": "chauhan@123"
+}
+```
+
+Response will return:
+
+```json
+{
+  "accessToken": "JWT_TOKEN",
+  "user": { "id": 1, "name": "...", "email": "...", "role": "ADMIN" }
+}
+```
+
+---
+
+## 🧾 Step 2: Use Token
+
+Add header in all protected routes:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+---
+
+## 🧪 ADMIN Capabilities
+
+ADMIN can:
+
+* Register users
+* View all users
+* Change user roles
+* Create customers
+* Update customers
+* Delete customers
+* Create tasks
+* View all tasks
+* Assign tasks
+* Update any task status
+
+---
+
+## 🧪 EMPLOYEE Capabilities
+
+EMPLOYEE can:
+
+* Login
+* View customers
+* View only assigned tasks
+* Update **only their assigned tasks**
+
+EMPLOYEE **cannot**:
+
+* Create users
+* Delete customers
+* Create tasks
+* Assign tasks
+* Update other users' tasks
+
+---
+
 # 📎 Submission Info
 
 Repository:
@@ -343,7 +482,7 @@ https://github.com/chauhanmuskan291980-wq/Prysm_labs_backend_assignments
 Swagger:
 
 ```
-http://31.97.230.36:5002/api-docs/
+http://31.97.230.36:5002/api-docs
 ```
 
 ---
@@ -363,23 +502,4 @@ Backend Developer Intern Candidate
 ✔ Production Ready
 
 ---
-## 🚀 Deployment
-
-This backend application is **already deployed on a VPS server**.
-
-**Live Server IP:**  
-http://31.97.230.36:5002
-
-**Swagger API Docs:**  
-http://31.97.230.36:5002/api-docs
-
-### Deployment Stack
-- VPS (Ubuntu Server)
-- Node.js
-- Express.js
-- PostgreSQL
-- Prisma ORM
-- PM2 (Process Manager)
-- Swagger API Documentation
-
-The application is running in production mode and fully accessible via the VPS IP address.
+ 
