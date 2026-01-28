@@ -66,27 +66,25 @@ const updateCustomer = async (req, res) => {
 
 // DELETE /customers/:id
 const deleteCustomer = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        // Check if customer exists
-        const existingCustomer = await prisma.customer.findUnique({
-            where: { id: parseInt(id) }
-        });
-        if (!existingCustomer) {
-            return res.status(404).json({ message: "Customer not found" });
-        }
+    // delete dependent tasks first
+    await prisma.task.deleteMany({
+      where: { customerId: Number(id) }
+    });
 
-        await prisma.customer.delete({
-            where: { id: parseInt(id) }
-        });
+    // then delete customer
+    await prisma.customer.delete({
+      where: { id: Number(id) }
+    });
 
-        res.status(200).json({ message: "Customer deleted successfully" });
+    res.status(200).json({ message: "Customer and related tasks deleted" });
 
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server error in deleting customer" });
-    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Delete failed" });
+  }
 };
 
 module.exports = { getCustomerById, updateCustomer, deleteCustomer };
