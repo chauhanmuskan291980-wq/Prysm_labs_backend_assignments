@@ -63,7 +63,7 @@ const createTask = async (req, res) => {
 /**
  * GET /tasks
  */
- const getTasks = async (req, res) => {
+const getTasks = async (req, res) => {
   try {
     const user = req.user; // from auth middleware
     console.log("User making request:", user);
@@ -98,22 +98,36 @@ const createTask = async (req, res) => {
 /**
  * PATCH /tasks/:id/status
  */
-const updateTaskStatus = async (req, res) => {
+ const updateTaskStatus = async (req, res) => {
   try {
+    console.log("PATCH /tasks/:id/status called");
+
     const { id } = req.params;
     const { status } = req.body;
     const user = req.user;
+
+    console.log("Params id:", id);
+    console.log("Body status:", status);
+    console.log("User from token:", user);
 
     const task = await prisma.task.findUnique({
       where: { id: parseInt(id) }
     });
 
+    console.log("Task from DB:", task);
+
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // EMPLOYEE security rule
+    console.log("task.assignedToId:", task.assignedToId);
+    console.log("user.userId:", user.userId);
+    console.log("user.role:", user.role);
+    console.log("Comparison result:", task.assignedToId !== user.userId);
+
+    // Security rule
     if (user.role === "EMPLOYEE" && task.assignedToId !== user.userId) {
+      console.log("❌ Forbidden triggered");
       return res.status(403).json({ message: "Forbidden: You can only update your own tasks" });
     }
 
@@ -121,14 +135,12 @@ const updateTaskStatus = async (req, res) => {
       where: { id: parseInt(id) },
       data: { status },
       include: {
-        assignedTo: {
-          select: { id: true, name: true, email: true }
-        },
-        customer: {
-          select: { id: true, name: true, email: true, phone: true }
-        }
+        assignedTo: { select: { id: true, name: true, email: true } },
+        customer: { select: { id: true, name: true, email: true, phone: true } }
       }
     });
+
+    console.log("✅ Task updated");
 
     res.status(200).json({
       message: "Task status updated successfully",
@@ -140,6 +152,7 @@ const updateTaskStatus = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 module.exports = {
   createTask,
