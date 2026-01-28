@@ -32,7 +32,7 @@ const {loginSchema} = require("../validation/auth.schems");
  *                 type: string
  *               role:
  *                 type: string
- *                 enum: [USER, ADMIN]
+ *                 enum: [EMPLOYEE, ADMIN]
  *     responses:
  *       201:
  *         description: User registered successfully
