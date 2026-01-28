@@ -343,7 +343,7 @@ https://github.com/chauhanmuskan291980-wq/Prysm_labs_backend_assignments
 Swagger:
 
 ```
-http://<server-ip>:5002/api-docs
+http://31.97.230.36:5002/api-docs/
 ```
 
 ---
