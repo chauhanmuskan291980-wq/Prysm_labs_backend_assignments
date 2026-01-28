@@ -8,6 +8,7 @@ const userRouter = require("./router/user.router");
 const taskRouter = require("./router/task.routes");
 const customersRouter = require("./router/customer.routes");
 const customerRouter = require("./router/customers.routes");
+const customersBySearch = require("./router/searchCustomer.router");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./docs/swagger");
 
@@ -17,6 +18,7 @@ app.use("/",customersRouter);
 app.use("/",customerRouter);
 app.use('/',userRouter);
 app.use("/",taskRouter);
+app.use("/",customersBySearch);
 
 app.listen(PORT,()=>{
     console.log(`Server is runing on ${PORT}`)

@@ -71,7 +71,7 @@ const {
 router.post(
   "/tasks",
   authMiddleware,
-//   roleMiddleware("ADMIN"),
+  roleMiddleware("ADMIN"),
   validate(createTaskSchema),
   createTask
 );
@@ -211,7 +211,6 @@ router.get(
 router.patch(
   "/tasks/:id/status",
   authMiddleware,
-//   roleMiddleware(["ADMIN", "EMPLOYEE"]),
   validate(updateTaskStatusSchema),
   updateTaskStatus
 );

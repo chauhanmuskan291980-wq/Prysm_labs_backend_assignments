@@ -13,4 +13,14 @@ const updateCustomerSchema = z.object({
   phone: z.string().min(10, "Phone is Minimum 10 Number required").optional(),
   company: z.string().optional()
 });
-module.exports = { createCustomerSchema,updateCustomerSchema };
+
+
+const getCustomersQuerySchema = z.object({
+  search: z.string().optional(),
+  page: z.string().regex(/^\d+$/).optional(),
+  limit: z.string().regex(/^\d+$/).optional()
+});
+
+ 
+
+module.exports = { createCustomerSchema,updateCustomerSchema,getCustomersQuerySchema };
