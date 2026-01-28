@@ -9,7 +9,7 @@ const roleMiddleware = require("../middleware/role.middleware");
 
 /**
  * @swagger
- * /customers:
+ * /customers-search:
  *   get:
  *     summary: Get customers (search + pagination)
  *     tags: [Customers]

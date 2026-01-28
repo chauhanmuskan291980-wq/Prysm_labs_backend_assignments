@@ -5,6 +5,8 @@ const getCustomersVBySearch = async (req, res) => {
   try {
     const { search, page = 1, limit = 10 } = req.query;
 
+    console.log("SEARCH:", search); // debug
+
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
     const skip = (pageNum - 1) * limitNum;
@@ -24,7 +26,7 @@ const getCustomersVBySearch = async (req, res) => {
       where: whereCondition,
       skip,
       take: limitNum,
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" }  
     });
 
     const total = await prisma.customer.count({ where: whereCondition });
@@ -42,5 +44,6 @@ const getCustomersVBySearch = async (req, res) => {
     res.status(500).json({ message: "Error fetching customers" });
   }
 };
+
 
 module.exports = { getCustomersVBySearch };
