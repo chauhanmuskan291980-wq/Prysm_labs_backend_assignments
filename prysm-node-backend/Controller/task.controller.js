@@ -63,16 +63,17 @@ const createTask = async (req, res) => {
 /**
  * GET /tasks
  */
-const getTasks = async (req, res) => {
+ const getTasks = async (req, res) => {
   try {
-    const user = req.user;
+    const user = req.user; // from auth middleware
     console.log("User making request:", user);
 
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const whereCondition = user.role === "EMPLOYEE" ? { assignedToId: user.id } : {};
+    // Correct field: user.userId
+    const whereCondition = user.role === "EMPLOYEE" ? { assignedToId: user.userId } : {};
     console.log("Where condition:", whereCondition);
 
     const tasks = await prisma.task.findMany({
