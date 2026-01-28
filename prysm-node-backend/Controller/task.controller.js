@@ -65,28 +65,23 @@ const createTask = async (req, res) => {
  */
 const getTasks = async (req, res) => {
   try {
-    const user = req.user; // from auth middleware
+    const user = req.user;
+    console.log("User making request:", user);
 
-    let whereCondition = {};
-
-    // EMPLOYEE → only own tasks
-    if (user.role === "EMPLOYEE") {
-      whereCondition = { assignedToId: user.id };
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
+
+    const whereCondition = user.role === "EMPLOYEE" ? { assignedToId: user.id } : {};
+    console.log("Where condition:", whereCondition);
 
     const tasks = await prisma.task.findMany({
       where: whereCondition,
       include: {
-        assignedTo: {
-          select: { id: true, name: true, email: true }
-        },
-        customer: {
-          select: { id: true, name: true, email: true, phone: true }
-        }
+        assignedTo: { select: { id: true, name: true, email: true } },
+        customer: { select: { id: true, name: true, email: true, phone: true } }
       },
-      orderBy: {
-        createdAt: "desc"
-      }
+      orderBy: { createdAt: "desc" }
     });
 
     res.status(200).json({ data: tasks });
@@ -96,6 +91,7 @@ const getTasks = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 /**
