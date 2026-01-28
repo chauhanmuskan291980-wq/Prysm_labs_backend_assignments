@@ -113,7 +113,7 @@ const updateTaskStatus = async (req, res) => {
     }
 
     // EMPLOYEE security rule
-    if (user.role === "EMPLOYEE" && task.assignedToId !== user.id) {
+    if (user.role === "EMPLOYEE" && task.assignedToId !== user.userId) {
       return res.status(403).json({ message: "Forbidden: You can only update your own tasks" });
     }
 
